@@ -34,8 +34,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:5500',
 ]
 
-# Application definition
 
+# Application definition
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
