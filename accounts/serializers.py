@@ -74,14 +74,13 @@ class UserLoginSerializer(serializers.Serializer):
 
 
 class DonorProfileSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username', read_only=True)
+    username = serializers.CharField(source='user.username', required=False, allow_null=True, default='Anonymous User')
     first_name = serializers.CharField(source='user.first_name', required=False, allow_blank=True)
     last_name = serializers.CharField(source='user.last_name', required=False, allow_blank=True)
     email = serializers.EmailField(source='user.email', required=False, allow_blank=True)
     mobaile_no = serializers.CharField(required=False, allow_blank=True)
     address = serializers.CharField(required=False, allow_blank=True)
     blood_group = serializers.CharField(required=False, allow_blank=True)
-    image = serializers.CharField(required=False, allow_blank=True)
     age = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
