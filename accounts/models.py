@@ -30,8 +30,3 @@ class DonorProfile(models.Model):
      is_available = models.BooleanField(default=True)
      health_screening_passed = models.BooleanField(default=False)
 
-
-     def __str__(self):
-          if self.user:
-               return self.user.username
-          return "No Username"
