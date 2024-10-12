@@ -75,9 +75,14 @@ class UserLoginSerializer(serializers.Serializer):
 
 class DonorProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', required=False, read_only=True)
-    first_name = serializers.CharField(source='user.first_name', required=False)
-    last_name = serializers.CharField(source='user.last_name', required=False)
-    email = serializers.EmailField(source='user.email', required=False)
+    first_name = serializers.CharField(source='user.first_name', required=False, allow_blank=True)
+    last_name = serializers.CharField(source='user.last_name', required=False, allow_blank=True)
+    email = serializers.EmailField(source='user.email', required=False, allow_blank=True)
+    mobaile_no = serializers.CharField(required=False, allow_blank=True)
+    address = serializers.CharField(required=False, allow_blank=True)
+    blood_group = serializers.CharField(required=False, allow_blank=True)
+    image = serializers.CharField(required=False, allow_blank=True)
+    age = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = DonorProfile
@@ -90,30 +95,29 @@ class DonorProfileSerializer(serializers.ModelSerializer):
             'user': {'read_only': True},
             'health_screening_passed': {'read_only': True},
             'is_available': {'read_only': True},
-            'mobaile_no': {'read_only': False},
-            'age': {'read_only': False},
-            'blood_group': {'read_only': False},
-            'username': {'read_only': True},
         }
 
     def update(self, instance, validated_data):
-        # Nested user data update
         user_data = validated_data.pop('user', {})
-
-        # Update user fields
         user = instance.user
-        if user_data:  # Check if user_data is not empty
-            user.first_name = user_data.get('first_name', user.first_name)
-            user.last_name = user_data.get('last_name', user.last_name)
-            user.email = user_data.get('email', user.email)
-            user.save()
 
-        # Update DonorProfile fields
-        instance.age = validated_data.get('age', instance.age)
-        instance.mobaile_no = validated_data.get('mobaile_no', instance.mobaile_no)
-        instance.address = validated_data.get('address', instance.address)
-        instance.image = validated_data.get('image', instance.image)
-        instance.blood_group = validated_data.get('blood_group', instance.blood_group)
+        # ইউজার ফিল্ডগুলো আপডেট করুন যদি ডেটা দেওয়া থাকে
+        if 'first_name' in user_data and user_data['first_name'] != '':
+            user.first_name = user_data['first_name']
+        if 'last_name' in user_data and user_data['last_name'] != '':
+            user.last_name = user_data['last_name']
+        if 'email' in user_data and user_data['email'] != '':
+            user.email = user_data['email']
+        user.save()
+
+        # DonorProfile ফিল্ডগুলো আপডেট করুন যদি ডেটা দেওয়া থাকে
+        for field in ['age', 'mobaile_no', 'address', 'blood_group']:
+            if field in validated_data and validated_data[field] is not None and validated_data[field] != '':
+                setattr(instance, field, validated_data[field])
+
+        # শুধু তখনই ইমেজ আপডেট করুন যদি এটি None না হয়
+        if 'image' in validated_data and validated_data['image'] is not None:
+            instance.image = validated_data['image']
+
         instance.save()
-
         return instance

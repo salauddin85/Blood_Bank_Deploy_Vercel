@@ -22,9 +22,8 @@ class DonorProfile(models.Model):
      user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
     
      age = models.PositiveIntegerField()
-     image = models.ImageField(upload_to="accounts/media/images")
+     image = CloudinaryField('image')
 
-     # image=models.ImageField(upload_to="images")
      address = models.TextField()
      mobaile_no = models.PositiveIntegerField()
      blood_group = models.CharField(max_length=3)

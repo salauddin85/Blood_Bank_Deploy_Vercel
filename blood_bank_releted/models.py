@@ -32,7 +32,7 @@ class DonorBlogPost(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     author= models.ForeignKey(User,on_delete=models.CASCADE, related_name='blogreleted')  # Donor info
-    image = models.ImageField(upload_to="blood_bank_releted/media/images")
+    image = CloudinaryField('image', null=True, blank=True)  # CloudinaryField ব্যবহার করা হচ্ছে
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

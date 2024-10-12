@@ -15,7 +15,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+import cloudinary
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -186,19 +186,21 @@ EMAIL_HOST_USER = 'ahmedsalauddin677785@gmail.com'
 EMAIL_HOST_PASSWORD = 'dixq ddcl ndhg zqnb'
 
 
+
+
 import os
 
 # Set the CLOUDINARY_URL using the provided value
 # CLOUDINARY_URL = os.env('CLOUDINARY_URL', 'cloudinary://464615231665312:CGMQbVMG6UJOS7zSsY9AlOlX6S0@dnzqmx8nw?secure_distribution=mydomain.com&upload_prefix=myprefix.com')
 
-# import cloudinary.uploader
-# import cloudinary.api
-# CLOUDINARY_URL='cloudinary://464615231665312:CGMQbVMG6UJOS7zSsY9AlOlX6S0@dnzqmx8nw'
-# cloudinary.config(
-#     cloud_name="dnzqmx8nw",
-#     api_key="464615231665312",
-#     api_secret="CGMQbVMG6UJOS7zSsY9AlOlX6S0"
-# )
+import cloudinary.uploader
+import cloudinary.api
+CLOUDINARY_URL='cloudinary://464615231665312:CGMQbVMG6UJOS7zSsY9AlOlX6S0@dnzqmx8nw'
+cloudinary.config(
+    cloud_name="dnzqmx8nw",
+    api_key="464615231665312",
+    api_secret="CGMQbVMG6UJOS7zSsY9AlOlX6S0"
+)
 
 # CLOUDINARY_STORAGE = {
 #     'CLOUD_NAME': 'dnzqmx8nw',
@@ -206,4 +208,5 @@ import os
 #     'API_SECRET': 'CGMQbVMG6UJOS7zSsY9AlOlX6S0',
 # }
 
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+

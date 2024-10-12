@@ -32,7 +32,7 @@ class UserRegistrationView(APIView):
             print("token", token)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             print('Uid', uid)
-            confirm_link = f"https://blood-bank-backend-c7w8.onrender.com/accounts/active/{uid}/{token}/"
+            confirm_link = f"https://blood-bank-deploy-vercel.vercel.app/accounts/active/{uid}/{token}/"
             email_subject = "Confirm Your Email"
             email_body = render_to_string("confirm_email.html", {"confirm_link": confirm_link})
             email = EmailMultiAlternatives(email_subject, '', to=[user.email])
@@ -98,19 +98,7 @@ class UserLogoutView(APIView):
 
 
 
-# class DonorProfileView(viewsets.ModelViewSet):
-#     serializer_class = DonorProfileSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         return DonorProfile.objects.filter(user=self.request.user)
-
-
-# IMAGEBB_API_URL = 'https://api.imgbb.com/1/upload'  # ImageBB API URL
-# IMAGEBB_API_KEY = 'ca0a7f8e97446e4139d17010b039c2da'
-   
 class DonorProfileView(viewsets.ModelViewSet):
-    # queryset=DonorProfile
     serializer_class = DonorProfileSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -118,68 +106,20 @@ class DonorProfileView(viewsets.ModelViewSet):
         return DonorProfile.objects.filter(user=self.request.user)
 
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', True)  # Allow partial updates
         instance = self.get_object()
-        
-        # Remove image upload logic
-        # Handle image upload (removed)
+
+        # Print all the request data to see what data the user is sending
+        print("Request Data:", self.request.data)
+
+        # Check how many fields are being sent in the request
+        num_fields = len(self.request.data)
+
+        # Set partial to True if at least one field is sent
+        partial = num_fields > 0
 
         # Proceed with the regular update process
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+
         return Response(serializer.data)
-
-
-    # def upload_image_to_imgbb(self, image):
-    #     try:
-    #         # Read the image file as binary
-    #         image_data = image.read()  # Read the image directly from the uploaded file
-            
-    #         # Prepare the payload
-    #         payload = {
-    #             'key': IMAGEBB_API_KEY,
-    #             'image': image_data,  # Use the binary data of the image
-    #         }
-    #         print("Uploading image to ImageBB...")
-    #         print(f"API Key: {IMAGEBB_API_KEY}")  # এই লাইনে API কীটি প্রকাশ করবেন না।
-    #         # print(f"Payload: {payload}")  # Payload লগ করুন
-    #         # Send the request to ImageBB
-    #         response = requests.post(IMAGEBB_API_URL, files=payload, timeout=30)  # Use 'files' instead of 'data'
-    #         response_data = response.json()
-    #         # print(response_data)
-
-    #         # Check for success in the response
-    #         if response.status_code == 200:
-                
-    #             image_url = response.json()['data']['url']  # Return the uploaded image URL
-    #             print("Image uploaded successfully:", image_url)
-    #         else:
-    #             print("Image upload failed:", response.json())  # Log the error response
-    #             return None  # Handle the error as needed
-    #     except requests.exceptions.Timeout:
-    #         print("Image upload timed out.")
-    #         return None  # Or raise an exception/message
-    #     except Exception as e:
-    #         print("An error occurred:", str(e))
-    #         return None  # Or raise an exception/message
-
-    # def update(self, request, *args, **kwargs):
-        # partial = kwargs.pop('partial', True)  # Allow partial updates
-        # instance = self.get_object()
-        # image = request.FILES.get('image')
-        # print(image,"image")
-        # # Handle image upload
-        # if image:
-        #     image_url = self.upload_image_to_imgbb(image)
-        #     print(image_url,"image_url")
-        #     if image_url:
-        #         request.data['image'] = image_url  # Use the URL returned by ImageBB
-        #         print(request.data['image'])
-        #     else:
-        #         return Response({"error": "Image upload failed."}, status=400)  # Return error response
-
-        # serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        # serializer.is_valid(raise_exception=True)
-        # self.perform_update(serializer)
-        # return Response(serializer.data)
