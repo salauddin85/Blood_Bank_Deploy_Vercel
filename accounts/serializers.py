@@ -74,7 +74,7 @@ class UserLoginSerializer(serializers.Serializer):
 
 
 class DonorProfileSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username', required=False, read_only=True)
+    username = serializers.CharField(source='user.username', read_only=True)
     first_name = serializers.CharField(source='user.first_name', required=False, allow_blank=True)
     last_name = serializers.CharField(source='user.last_name', required=False, allow_blank=True)
     email = serializers.EmailField(source='user.email', required=False, allow_blank=True)

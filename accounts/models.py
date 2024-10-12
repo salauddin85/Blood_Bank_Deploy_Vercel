@@ -22,7 +22,7 @@ class DonorProfile(models.Model):
      user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
     
      age = models.PositiveIntegerField()
-     image = CloudinaryField('image')
+     image = CloudinaryField('image', null=True, blank=True)  # CloudinaryField ব্যবহার করা হচ্ছে
 
      address = models.TextField()
      mobaile_no = models.PositiveIntegerField()
@@ -30,3 +30,7 @@ class DonorProfile(models.Model):
      is_available = models.BooleanField(default=True)
      health_screening_passed = models.BooleanField(default=False)
 
+     def __str__(self):
+          if self.user and self.user.username:
+               return self.user.username
+          return "Anonymous User"
