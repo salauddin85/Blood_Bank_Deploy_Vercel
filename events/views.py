@@ -22,7 +22,7 @@ from rest_framework.pagination import PageNumberPagination
 from django.utils import timezone
 import pytz
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
+from rest_framework.exceptions import ValidationError
 
 
 
@@ -102,7 +102,7 @@ class DonationEventViewSet(viewsets.ModelViewSet):
     # pagination_class = DonationEventPagination
 
     def perform_create(self, serializer):
-       
+        
         event_name=serializer.validated_data['event_name']
         blood_group=serializer.validated_data['blood_group']
         date_str = serializer.validated_data.get('date')
@@ -119,9 +119,27 @@ class DonationEventViewSet(viewsets.ModelViewSet):
         print(event)
         if  event:
             raise serializers.ValidationError({'error': f'A Event for user {user} event name {event_name} and blood group {blood_group} already exists.'})
+        
+        
+        try:
+            donation_history = DonationHistory.objects.filter(user=self.request.user).latest('accepted_on')
+            
+            min_donation_interval = timedelta(days=56)
+            accepted_date = donation_history.accepted_on.date()
+            current_date = timezone.now().date()
 
-        donation_event = serializer.save(created_by=self.request.user)
-        print(f"Saved Event ID: {donation_event.id}, Created By: {donation_event.created_by}")
+            if current_date < accepted_date + min_donation_interval:
+                raise ValidationError({"error": "You must wait at least 56 days between donations."})
+
+        except DonationHistory.DoesNotExist:
+            # যদি donation history না থাকে তাহলে নতুন donation করা যাবে
+            donor_profile = get_object_or_404(DonorProfile, user=self.request.user)
+
+            donor_profile.is_available=True
+            donor_profile.save()
+            donation_event = serializer.save(created_by=self.request.user)
+            
+            print(f"Saved Event ID: {donation_event.id}, Created By: {donation_event.created_by}")
 
 
     def get_queryset(self):
@@ -153,21 +171,14 @@ class DonationEventViewSet(viewsets.ModelViewSet):
 
             # Retrieve the DonorProfile for the current user
             donor_profile = get_object_or_404(DonorProfile, user=request.user)
-
+            
             # Create a donation history record
             donation_history = DonationHistory.objects.create(user=request.user, event=event)
 
-            # # Check the donation interval
-            # min_donation_interval = timedelta(days=56)
-            # if donation_history.accepted_on:
-            #     accepted_date = donation_history.accepted_on.date()  # Convert datetime to date
-            #     current_date = timezone.now().date()
+            
 
-            #     if current_date < accepted_date + min_donation_interval:
-            #         return Response({"error": "You must wait at least 56 days between donations."}, status=status.HTTP_400_BAD_REQUEST)
 
-            # # Update DonorProfile
-            # donor_profile.blood_donation_count += 1
+
             donor_profile.health_screening_passed = True
             donor_profile.is_available=False
             donor_profile.save()

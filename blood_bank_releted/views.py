@@ -14,6 +14,8 @@ from django.utils import timezone
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 import requests
 
+
+
 class AboutUsViewSet(viewsets.ModelViewSet):
     queryset = AboutUs.objects.all()
     serializer_class = AboutUsSerializer
@@ -122,3 +124,5 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
         # Save subscription
         serializer.save(user=self.request.user)
         return Response({"detail": "Thank you! for Subscription us"}, status=status.HTTP_201_CREATED)
+
+
