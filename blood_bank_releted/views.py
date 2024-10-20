@@ -96,7 +96,6 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 class All_Feddback(viewsets.ModelViewSet):
     queryset=Feedback.objects.all()
     serializer_class=FeedbackSerializer
-    pagination_class=DonationEventPagination
 
     @action(detail=False,methods=['get'])
     def all_feedback(self,request):

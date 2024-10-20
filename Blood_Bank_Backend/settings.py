@@ -183,7 +183,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'ahmedsalauddin677785@gmail.com'
-EMAIL_HOST_PASSWORD = 'dixq ddcl ndhg zqnb'
+EMAIL_HOST_PASSWORD = 'mlqb hgeb ppxj ayoz'
 
 
 
