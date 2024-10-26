@@ -46,6 +46,45 @@ The Donor (or User) can perform the following actions:
 - Update their profile and change their password.
 
 
+## API Endpoints
+
+### Authentication
+- **Register:**  
+  `POST https://blood-bank-deploy-vercel.vercel.app/auth/register/`
+- **Login:**  
+  `POST https://blood-bank-deploy-vercel.vercel.app/auth/login/`
+- **Logout:**  
+  `POST https://blood-bank-deploy-vercel.vercel.app/auth/logout/`
+
+### Donor Features
+- **Notifications:**  
+  `GET https://blood-bank-deploy-vercel.vercel.app/events/notifications/`
+- **Request User Donation Events:**  
+  `GET https://blood-bank-deploy-vercel.vercel.app/events/donation-events/`
+- **Donation History:**  
+  `GET https://blood-bank-deploy-vercel.vercel.app/events/donation-history/`
+- **All Donation Events:**  
+  `GET https://blood-bank-deploy-vercel.vercel.app/events/dashboard/`
+- **Without Request User:**  
+  `GET https://blood-bank-deploy-vercel.vercel.app/events/dashboard/recipient_requests/`
+- **All Donation History:**  
+  `GET https://blood-bank-deploy-vercel.vercel.app/events/dashboard/donation_history/`
+
+### Other Features
+- **About Us:**  
+  `GET https://blood-bank-deploy-vercel.vercel.app/blood_bank_releted/about-us/`
+- **Contact:**  
+  `GET https://blood-bank-deploy-vercel.app/blood_bank_releted/contact/`
+- **Blog:**  
+  `GET https://blood-bank-deploy-vercel.app/blood_bank_releted/blog/`
+- **Feedback:**  
+  `POST https://blood-bank-deploy-vercel.app/blood_bank_releted/feedback/`
+- **All Feedback:**  
+  `GET https://blood-bank-deploy-vercel.app/blood_bank_releted/all_feedback/`
+- **Subscriptions:**  
+  `GET https://blood-bank-deploy-vercel.app/blood_bank_releted/subscriptions/`
+
+
 ## Getting Started
 
 ### Prerequisites
