@@ -45,8 +45,61 @@ The Donor (or User) can perform the following actions:
 - Leave reviews on their donation experience.
 - Update their profile and change their password.
 
-## Installation
 
-1. Clone the repository:
+## Getting Started
+
+### Prerequisites
+
+- Python 3.12.1
+- Django 5.1
+- Django Rest Framework
+
+### Installation
+
+
+### Setting Up the Django Environment on Windows
+
+1. Create a virtual environment:
    ```bash
-   git clone https://github.com/yourusername/blood-bank-project.git
+   python -m venv myenv
+   ```
+
+2. Navigate to the virtual environment directory:
+   ```bash
+   cd myenv
+   ```
+
+3. Activate the virtual environment:
+   ```bash
+   Scripts\Activate\myenv
+   ```
+
+4. To deactivate the virtual environment, use:
+   ```bash
+   deactivate
+   ```
+
+5. Install Django:
+   ```bash
+   pip install django
+   ```
+
+6. Create migrations:
+   ```bash
+   python manage.py makemigrations
+   ```
+
+7. Apply migrations:
+   ```bash
+   python manage.py migrate
+   ```
+
+8. Create a superuser:
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+9. Start the development server:
+   ```bash
+   python manage.py runserver
+   ```
