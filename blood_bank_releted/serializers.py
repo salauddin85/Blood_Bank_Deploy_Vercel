@@ -4,10 +4,18 @@ from .models import AboutUs
 from rest_framework import serializers
 from .models import Contact
 # from .models import BlogPost
-from .models import Feedback,DonorBlogPost,Subscription
+from .models import Feedback,DonorBlogPost,Subscription,Payment
 
 
 
+
+
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ['id', 'user', 'amount', 'transaction_id', 'status', 'created_at']
 
 
 
@@ -40,8 +48,6 @@ class FeedbackSerializer(serializers.ModelSerializer):
         model = Feedback
         fields = ['id', 'donor', 'feedback', 'rating', 'created_at']  # Use 'donor' in fields as well
 
-from rest_framework import serializers
-from .models import Subscription
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
