@@ -72,8 +72,15 @@ class UserLoginView(APIView):
             user = authenticate(username=username, password=password)
             if user:
                 token, _ = Token.objects.get_or_create(user=user)
-                print(token,_)
-                return Response({'token': token.key,'user_id': user.id}, status=status.HTTP_200_OK)
+                is_admin = user.is_staff and user.is_superuser
+                print(f"User{user} IS admin:{is_admin}TOken:{token}")
+                return Response({
+                    'token': token.key,
+                    'user_id': user.id,
+                    'is_admin': is_admin,
+                    'username': user.username,  # ইউজারনেম যুক্ত করা হলো
+                    'email': user.email  # ইমেইল যুক্ত করা হলো
+                })
                 # return redirect("http://127.0.0.1:5500/login.html")
             else:
                 return Response({'error': "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)

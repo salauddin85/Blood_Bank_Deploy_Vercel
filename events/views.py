@@ -23,7 +23,7 @@ from django.utils import timezone
 import pytz
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.exceptions import ValidationError
-
+from accounts.permissions import Isadmin,IsDonor
 
 
 
@@ -150,6 +150,8 @@ class DonationEventViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'], url_path=r'acceptdonation/(?P<event_id>\d+)')
     def accept(self, request, event_id):
+        if not  request.user.is_staff or request.user.is_superuser:
+            return Response({'error':'you cannot accept donation you are not an admin'})
         print(event_id)
         try:
             # Check if the event exists

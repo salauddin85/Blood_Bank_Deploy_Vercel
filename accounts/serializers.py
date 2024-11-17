@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.permissions import BasePermission
 from events.models import DonationHistory
-
+from django.contrib.auth import authenticate
 
 class DonorRegistrationSerializer(serializers.ModelSerializer):
     mobaile_no = serializers.CharField(max_length=12, required=True)
@@ -66,9 +66,20 @@ class DonorRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required = True)
-    password = serializers.CharField(required = True)
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    is_admin = serializers.SerializerMethodField()
 
+    def get_is_admin(self, obj):
+        # Authenticate the user with username and password
+        user = authenticate(username=obj['username'], password=obj['password'])
+        
+        if user is not None:
+            # If user is authenticated, check if they are a staff member or superuser
+            return user.is_staff and user.is_superuser
+        else:
+            # If user is not found or password is incorrect, return False
+            return False
 
 
 
